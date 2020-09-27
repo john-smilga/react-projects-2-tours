@@ -13,12 +13,14 @@ function App() {
   };
 
   const fetchTours = async () => {
+    setLoading(true);
     try {
       const response = await fetch(url);
       const tours = await response.json();
       setLoading(false);
       setTours(tours);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -32,7 +34,18 @@ function App() {
       </main>
     );
   }
-
+  if (tours.length === 0) {
+    return (
+      <main>
+        <div className="title">
+          <h2>no tours left</h2>
+          <button className="btn" onClick={() => fetchTours()}>
+            refresh
+          </button>
+        </div>
+      </main>
+    );
+  }
   return (
     <main>
       <Tours tours={tours} removeTour={removeTour} />
